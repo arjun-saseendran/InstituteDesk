@@ -2,20 +2,23 @@ import { Schema, model } from "mongoose";
 
 const sessionSchema = new Schema(
   {
-    title: String,
-    required: true,
-    miniLength: 3,
-    maxLength: 30,
+    title: {
+      type: String,
+      required: true,
+      minLength: 3,
+      maxLength: 30,
+    },
+
+    startTime: {
+      type: String,
+      required: true,
+    },
+    endTime: {
+      type: String,
+      required: true,
+    },
   },
-  {
-    startTime: String,
-    required: true,
-  },
-  {
-    endTime: String,
-    required: true,
-  },
-  { timestamp: true },
+  { timestamps: true },
 );
 
 export const Session = model("Session", sessionSchema);

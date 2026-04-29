@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
+import { apiRouter } from "./routes/index.js";
 
 // config dotenv
 dotenv.config();
@@ -28,7 +29,7 @@ connectDB();
 app.use(express.json());
 
 // api v1 routes
-// app.use("/api", apiRoutes)
+app.use("/api", apiRouter)
 
 // config server
 app.listen(PORT, (error) => {
