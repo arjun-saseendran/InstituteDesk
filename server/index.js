@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 
-// Config dotenv.
+// config dotenv
 dotenv.config();
 
-// Config app.
+// config app
 const app = express();
 
-// Config cors.
+// config cors
 app.use(
   cors({
     origin: process.env.CORS,
@@ -18,19 +18,19 @@ app.use(
   }),
 );
 
-// Config port.
+// config port
 const PORT = process.env.PORT;
 
-// Connect database.
+// connect database
 connectDB();
 
-// Common Middlewares.
+// common middlewares
 app.use(express.json());
 
-// Api v1 routes.
+// api v1 routes
 // app.use("/api", apiRoutes)
 
-// Config server.
+// config server
 app.listen(PORT, (error) => {
   if (error) {
     console.error(error);

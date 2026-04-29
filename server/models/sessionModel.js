@@ -15,4 +15,7 @@ const sessionSchema = new Schema(
     endTime: String,
     required: true,
   },
+  { timestamp: true },
 );
+
+export const Session = model("Session", sessionSchema);
