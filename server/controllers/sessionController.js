@@ -3,7 +3,7 @@ import { Session } from "../models/sessionModel.js";
 // create session
 export const createSession = async (req, res) => {
   try {
-    // get data from request body
+    // data from request body
     const { title, startTime, endTime } = req.body;
 
     // verify input
@@ -20,12 +20,12 @@ export const createSession = async (req, res) => {
     // save session object to database
     await newSession.save();
 
-    // send response to client
+    // success response to client
     res
-      .status(200)
+      .status(201)
       .json({ msg: "session created successfully", data: newSession });
   } catch (error) {
-    // send error response to client
+    // error response to client
     return res.status(500).json({ err: "internal sever error" });
   }
 };
@@ -51,7 +51,7 @@ export const updateSession = async (req, res) => {
       { new: true },
     );
 
-    // send response to client
+    // success response to client
     res
       .status(200)
       .json({
@@ -59,28 +59,28 @@ export const updateSession = async (req, res) => {
         data: updatedSessionData,
       });
   } catch (error) {
-    // send error response to client
+    // error response to client
     return res.status(500).json({ err: "internal server error" });
   }
 };
 
-// get sessions
+// get all sessions
 export const getSessions = async (req, res) => {
   try {
     // get all sessions
     const sessions = await Session.find();
 
-    // send response to client
+    // success response to client
     res
       .status(200)
       .json({ msg: "sessions data fetched successfully", data: sessions });
   } catch (error) {
-    // send error response to client
+    // error response to client
     return res.status(500).json({ err: "failed to fetch sessions data" });
   }
 };
 
-// get session
+// get single session
 export const getSession = async (req, res) => {
   try {
     // get session id
@@ -89,12 +89,12 @@ export const getSession = async (req, res) => {
     // get session data
     const sessionData = await Session.findById(sessionId);
 
-    // send response to client
+    // success response to client
     res
       .status(200)
       .json({ msg: "session data fetched successfully", data: sessionData });
   } catch (error) {
-    // send error response to client
+    // error response to client
     return res.status(500).json({ err: "internal server error" });
   }
 };
@@ -108,10 +108,10 @@ export const deleteSession = async (req, res)=> {
     // get session
     const deleteSession = Session.findByIdAndDelete(sessionId)
 
-    // send response to client
+    // success response to client
     res.status(200).json({msg:`session with id: ${sessionId} deleted successfully`})
   } catch (error) {
-    // send error response to client
+    // error response to client
     return res.status(500).json({err:"internal server error"})
   }
 }
