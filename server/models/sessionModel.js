@@ -5,8 +5,8 @@ const sessionSchema = new Schema(
     title: {
       type: String,
       required: true,
-      minLength: 3,
-      maxLength: 30,
+      minlength: 3,
+      maxlength: 30,
     },
 
     startTime: {

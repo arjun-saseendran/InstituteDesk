@@ -5,14 +5,15 @@ const classSchema = new Schema(
     title: {
       type: String,
       required: true,
-      minLength: 3,
-      maxLength: 50,
+      minlength: 3,
+      maxlength: 50,
     },
     category: {
       type: String,
       required: true,
-      minLength: 3,
-      maxLength: 50,
+      minlength: 3,
+      maxlength: 50,
+      index: true
     },
     price: {
       type: Number,
@@ -23,6 +24,7 @@ const classSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Session",
       required: true,
+      index: true
     },
   },
   { timestamps: true },

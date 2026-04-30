@@ -98,12 +98,16 @@ export const UpdateClass = async (req, res) => {
     const classId = req.params.id;
 
     // update data
-    const updatedClass = await Class.findByIdAndUpdate({
-      title,
-      category,
-      price,
-      sessionId,
-    });
+    const updatedClass = await Class.findByIdAndUpdate(
+      classId,
+      {
+        title,
+        category,
+        price,
+        sessionId,
+      },
+      { new: true },
+    );
 
     // success response to client
     res

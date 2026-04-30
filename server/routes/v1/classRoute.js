@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { createClass, deleteClass, getClass, getClasses, UpdateClass } from "../../controllers/classController";
+import { createClass, deleteClass, getClass, getClasses, UpdateClass } from "../../controllers/classController.js";
 
 
 
 // config router
-const classRouter = Router();
+export const classRouter = Router();
 
 // create class
 classRouter.post("/", createClass)
