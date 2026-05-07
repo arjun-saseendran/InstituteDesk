@@ -33,6 +33,12 @@ app.use(cookieParser());
 // api v1 routes
 app.use("/api", apiRouter)
 
+// manage 404 error
+app.use((req,res,next)=>{
+   res.status(404).json({ message: "Endpoint not found" });
+})
+
+
 // config server
 app.listen(PORT, (error) => {
   if (error) {

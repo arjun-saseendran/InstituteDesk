@@ -11,16 +11,16 @@ import {
 export const sessionRouter = Router();
 
 // create new session
-sessionRouter.post("/", createSession);
+sessionRouter.post("/session", createSession);
 
 // update session
-sessionRouter.put("/:id", updateSession);
+sessionRouter.put("/session/:id", updateSession);
 
 // get sessions
-sessionRouter.get("/", getSessions);
+sessionRouter.get("/sessions", getSessions);
 
 // get session
-sessionRouter.get("/:id", getSession);
+sessionRouter.get("/session/:id", getSession);
 
 // delete session
-sessionRouter.delete("/:id", deleteSession);
+sessionRouter.delete("/session/:id", deleteSession);
