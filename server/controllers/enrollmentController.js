@@ -5,16 +5,16 @@ import { Enrollment } from "../models/enrollmentModel.js";
 export const createEnrollment = async (req, res) => {
   try {
     // data from request body
-    const { userId, classId, sessionId} = req.body;
+    const { studentId, classId, sessionId} = req.body;
 
     // validate data
-    if (!userId || !classId || !sessionId) {
+    if (!studentId || !classId || !sessionId) {
       return res.status(400).json({ err: "all fields required" });
     }
 
     // create new enrollment object
     const newEnrollment = new Enrollment({
-      userId,
+      studentId,
       classId,
       sessionId,
     });
