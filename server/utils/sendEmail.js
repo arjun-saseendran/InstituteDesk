@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export const sendPaymentEmail = async (
+export const sendPaymenEmail = async (
   studentEmail,
   className,
   amount,

@@ -1,5 +1,5 @@
 import { Order } from "../models/orderModel.js";
-import { Class } from "../models/classModel.js"; 
+import { Class } from "../models/classModel.js";
 import Stripe from "stripe";
 
 // config stripe
@@ -10,25 +10,19 @@ export const createCheckoutSession = async (req, res, next) => {
   try {
     const { classId } = req.body;
 
-    // fetch class details
     const classDetails = await Class.findById(classId);
-
     if (!classDetails) {
       return res.status(404).json({ err: "Class not found." });
     }
 
-    // create a new stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
             currency: "inr",
-            product_data: {
-              name: classDetails.title, 
-            },
-            // convert currency unit to paise 
-            unit_amount: Math.round(classDetails.price * 100), 
+            product_data: { name: classDetails.title },
+            unit_amount: Math.round(classDetails.price * 100),
           },
           quantity: 1,
         },
@@ -36,24 +30,33 @@ export const createCheckoutSession = async (req, res, next) => {
       mode: "payment",
       success_url: `${process.env.CORS}/user/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CORS}/user/payment-cancel`,
-      shipping_address_collection: {
-        allowed_countries: ["IN"],
-      },
     });
 
-    // save order details to the database
     const order = new Order({
-      studentId: req.user.id, 
-      sessionId: session.id,     
-      classId: classDetails._id, 
-      price: classDetails.price, 
-      paymentStatus: "pending", 
+      studentId: req.user.id,
+      sessionId: session.id,
+      classId: classDetails._id,
+      price: classDetails.price,
+      paymentStatus: "pending",
     });
-    
+
     await order.save();
 
+    // send email to student
+    await sendPaymentEmail(
+      req.user.email,
+      classDetails.title,
+      classDetails.price,
+      session.url,
+    );
+
     // success response
-    res.status(200).json({ success: true, sessionId: session.id });
+    res.status(200).json({
+      success: true,
+      message: "Session created and email sent to student.",
+      sessionId: session.id,
+      paymentUrl: session.url,
+    });
   } catch (error) {
     next(error);
   }
@@ -65,14 +68,18 @@ export const getSessionStatus = async (req, res, next) => {
     const studentId = req.user.id;
 
     // find the most recent order to get the correct session
-    const orderDetails = await Order.findOne({ studentId }).sort({ createdAt: -1 });
+    const orderDetails = await Order.findOne({ studentId }).sort({
+      createdAt: -1,
+    });
 
     if (!orderDetails) {
       return res.status(404).json({ err: "No orders found for this user" });
     }
 
     // retrieve session data from stripe
-    const session = await stripe.checkout.sessions.retrieve(orderDetails.sessionId);
+    const session = await stripe.checkout.sessions.retrieve(
+      orderDetails.sessionId,
+    );
 
     // success response
     res.status(200).json({
@@ -102,10 +109,10 @@ export const handlePaymentComplete = async (req, res, next) => {
     order.paymentStatus = "completed";
     await order.save();
 
-    return res.status(200).json({ 
-      success: true, 
+    return res.status(200).json({
+      success: true,
       message: "Payment completed, order status updated",
-      order 
+      order,
     });
   } catch (error) {
     next(error);
@@ -128,17 +135,17 @@ export const handlePaymentIncomplete = async (req, res, next) => {
     if (order.paymentStatus !== "completed") {
       // delete the pending order
       await Order.findByIdAndDelete(order._id);
-      
-      return res.status(200).json({ 
+
+      return res.status(200).json({
         success: true,
-        message: "Incomplete order deleted successfully" 
+        message: "Incomplete order deleted successfully",
       });
     }
 
     // handle payment status is completed
-    return res.status(400).json({ 
+    return res.status(400).json({
       success: false,
-      message: "Order payment already completed, cannot delete" 
+      message: "Order payment already completed, cannot delete",
     });
   } catch (error) {
     next(error);
