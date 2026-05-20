@@ -5,20 +5,20 @@ const studentSchema = new Schema(
     name: {
       type: String,
       required: true,
-      minlenght: 3,
-      maxlenght: 50,
+      minlength: 3,
+      maxlength: 50,
     },
     address: {
       type: String,
       required: true,
-      minlenght: 5,
+      minlength: 5,
     },
     mobile: {
       type: String,
       required: true,
       unique: true,
-      minlenght: 10,
-      maxlenght: 15,
+      minlength: 10,
+      maxlength: 15,
     },
     email: {
       type: String,
@@ -56,7 +56,7 @@ const studentSchema = new Schema(
       require: true,
       index: true,
     },
-    previousExpriance: {
+    previousExperience: {
       type: String,
       enum: ["YES", "NO"],
     },
