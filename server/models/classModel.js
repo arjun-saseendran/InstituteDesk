@@ -13,21 +13,15 @@ const classSchema = new Schema(
       required: true,
       minlength: 3,
       maxlength: 50,
-      index: true
+      index: true,
     },
     price: {
       type: Number,
       required: true,
-      min: 0
-    },
-    sessionId: {
-      type: Schema.Types.ObjectId,
-      ref: "Session",
-      required: true,
-      index: true
+      min: 0,
     },
   },
   { timestamps: true },
 );
 
-export const Class = model("Class", classSchema)
+export const Class = model("Class", classSchema);

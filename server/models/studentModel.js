@@ -25,6 +25,9 @@ const studentSchema = new Schema(
 
       unique: true,
     },
+    role: {
+      type: String,
+    },
     educationQualification: {
       type: String,
     },
@@ -79,4 +82,4 @@ const studentSchema = new Schema(
   { timestamps: true },
 );
 
-export const Student = model("Students", studentSchema);
+export const Student = model("Student", studentSchema);

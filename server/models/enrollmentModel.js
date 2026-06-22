@@ -14,12 +14,7 @@ const enrollmentSchema = new Schema(
       required: true,
       index: true,
     },
-    sessionId: {
-      type: Schema.Types.ObjectId,
-      ref: "Session",
-      required: true,
-      index: true,
-    },
+    
     status: {
       type: String,
       enum: ["active", "inactive"],
