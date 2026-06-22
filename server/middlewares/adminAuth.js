@@ -1,24 +1,23 @@
 import jwt from "jsonwebtoken";
 
-export const userAuth = (req, res, next) => {
+export const adminAuth = (req, res, next) => {
   try {
     // access token from cookies
     const { token } = req.cookies;
-    //   console.log("tokken", token);
 
-    // validate user
+    // validate admin
     if (!token) {
       return res.status(401).json({ message: "Please login" });
     }
+   
     // decode token
-
     const decode = jwt.verify(token, process.env.JWT_SECRET);
 
     // validate token
     if (!decode) {
-      return res.status(401).json({ message: "User not regsterd" });
+      return res.status(401).json({ message: "Admin not regsterd" });
     }
-    if (decode) req.user = decode;
+    if (decode) req.admin = decode;
 
     next();
   } catch (error) {
