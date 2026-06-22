@@ -12,9 +12,9 @@ adminRouter.post("/create", createAdmin)
 adminRouter.put("/update/:id" ,adminAuth, updateAdmin)
 
 // get all admin route
-adminRouter.get("/list", adminAuth, getAdmins)
+adminRouter.get("/admins", adminAuth, getAdmins)
 
-// get admin by id route
+// get admin route
 adminRouter.get("/:id",adminAuth, getAdmin)
 
 // admin login route
