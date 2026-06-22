@@ -9,19 +9,17 @@ export const adminRouter = Router();
 adminRouter.post("/create", createAdmin)
 
 // update admin route
-
 adminRouter.put("/update/:id" ,adminAuth, updateAdmin)
 
 // get all admin route
-
 adminRouter.get("/list", adminAuth, getAllAdmins)
 
 // get admin by id route
-
-// admin profile route
 adminRouter.get("/:id",adminAuth, getAdminById)
+
 // admin login route
 adminRouter.post('/login', loginAdmin)
+
 // admin logout route
 adminRouter.post('/logout', logoutAdmin)
 
@@ -29,7 +27,6 @@ adminRouter.post('/logout', logoutAdmin)
 adminRouter.delete("/delete",adminAuth, deleteAdmin)
 
 // verify admin route
-
 adminRouter.get("/verify", verifyAdmin)
 
 
