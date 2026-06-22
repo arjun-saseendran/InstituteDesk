@@ -8,7 +8,7 @@ export const createAdmin = async (req, res) => {
   try {
     // get data from boady
     const { name, address, mobile, email, password, isActive } = req.body;
-    const role = "admin";
+    
     // validate admin input
     if (!name || !email || !password) {
       return res
@@ -38,7 +38,6 @@ export const createAdmin = async (req, res) => {
       email,
       password: hashedPassword,
       isActive,
-      role,
     });
 
     // save admin to database
@@ -60,7 +59,7 @@ export const updateAdmin = async (req, res) => {
     // get admin id from params and data from body
     const adminId = req.params.id;
 
-    const { name, address, mobile, email, password, isActive, roll } = req.body;
+    const { name, address, mobile, email, password, isActive } = req.body;
 
     //  validate fieleds
     if (!name || !email || !password) {
@@ -78,18 +77,18 @@ export const updateAdmin = async (req, res) => {
 
     // update admin data
 
-    user.name = name;
-    user.address = address;
-    user.mobile = mobile;
-    user.email = email;
+    admin.name = name;
+    admin.address = address;
+    admin.mobile = mobile;
+    admin.email = email;
 
     // hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user.password = hashedPassword;
-    user.isActive = isActive;
-    user.roll = roll;
+    admin.password = hashedPassword;
+    admin.isActive = isActive;
+    
 
     // save updated admin to database
     const updatedAdmin = await admin.save();
@@ -119,7 +118,6 @@ export const getAllAdmins = async (req, res) => {
 };
 
 // get admin by id
-
 export const getAdminbyId = async (req, res) => {
   try {
     const id = req.params.id;

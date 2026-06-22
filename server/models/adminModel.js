@@ -5,8 +5,8 @@ const adminSchema = new Schema(
     name: {
       type: String,
       required: true,
-      minlenght: 3,
-      maxlenght: 50,
+      minlength: 3,
+      maxlength: 50,
     },
     address: {
       type: String,
@@ -25,14 +25,15 @@ const adminSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlenght: 6,
+      minlength: 6,
     },
     isActive: {
       type: Boolean,
-      default: null,
+      default: false,
     },
     role: {
       type: String,
+      default: "admin"
     },
   },
   {
