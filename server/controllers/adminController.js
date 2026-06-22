@@ -106,7 +106,7 @@ export const updateAdmin = async (req, res) => {
 
 // get all admins
 
-export const getAllAdmins = async (req, res) => {
+export const getAdmins = async (req, res) => {
   try {
     const admins = await Admin.find().select("-password");
 
@@ -118,7 +118,7 @@ export const getAllAdmins = async (req, res) => {
 };
 
 // get admin by id
-export const getAdminbyId = async (req, res) => {
+export const getAdmin = async (req, res) => {
   try {
     const id = req.params.id;
 

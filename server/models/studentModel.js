@@ -22,11 +22,11 @@ const studentSchema = new Schema(
     },
     email: {
       type: String,
-
       unique: true,
     },
     role: {
       type: String,
+      default: "student",
     },
     educationQualification: {
       type: String,

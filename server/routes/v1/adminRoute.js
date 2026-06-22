@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAdmin, deleteAdmin, getAllAdmins, getAdminById, loginAdmin, logoutAdmin, updateAdmin, verifyAdmin } from "../../controllers/adminController.js";
+import { createAdmin, deleteAdmin, getAdmins, getAdmin, loginAdmin, logoutAdmin, updateAdmin, verifyAdmin } from "../../controllers/adminController.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
 
 
@@ -12,10 +12,10 @@ adminRouter.post("/create", createAdmin)
 adminRouter.put("/update/:id" ,adminAuth, updateAdmin)
 
 // get all admin route
-adminRouter.get("/list", adminAuth, getAllAdmins)
+adminRouter.get("/list", adminAuth, getAdmins)
 
 // get admin by id route
-adminRouter.get("/:id",adminAuth, getAdminById)
+adminRouter.get("/:id",adminAuth, getAdmin)
 
 // admin login route
 adminRouter.post('/login', loginAdmin)
