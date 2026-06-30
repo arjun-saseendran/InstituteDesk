@@ -12,7 +12,7 @@ export const createUser = async (req, res) => {
       educationQualification,
       age,
       DateOfBirth,
-      nameOfather,
+      nameOfFather,
       nameOfGuardian,
       relationWithGuardian,
       occupationOfGuardian,
@@ -33,7 +33,7 @@ export const createUser = async (req, res) => {
       !educationQualification ||
       !age ||
       !DateOfBirth ||
-      !nameOfather ||
+      !nameOfFather ||
       !nameOfGuardian ||
       !relationWithGuardian ||
       !occupationOfGuardian ||
@@ -65,7 +65,7 @@ export const createUser = async (req, res) => {
       educationQualification,
       age,
       DateOfBirth,
-      nameOfather,
+      nameOfFather,
       nameOfGuardian,
       relationWithGuardian,
       occupationOfGuardian,
@@ -103,7 +103,7 @@ export const updateStudent = async (req, res) => {
       educationQualification,
       age,
       DateOfBirth,
-      nameOfather,
+      nameOfFather,
       nameOfGuardian,
       relationWithGuardian,
       occupationOfGuardian,
@@ -129,7 +129,7 @@ export const updateStudent = async (req, res) => {
     student.educationQualification = educationQualification;
     student.age = age;
     student.DateOfBirth = DateOfBirth;
-    student.nameOfather = nameOfather;
+    student.nameOfFather = nameOfFather;
     student.nameOfGuardian = nameOfGuardian;
     student.relationWithGuardian = relationWithGuardian;
     student.occupationOfGuardian = occupationOfGuardian;

@@ -37,7 +37,7 @@ const studentSchema = new Schema(
     DateOfBirth: {
       type: Date,
     },
-    nameOfather: {
+    nameOfFather: {
       type: String,
       required: true,
       minlenght: 3,
