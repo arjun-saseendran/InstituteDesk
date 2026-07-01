@@ -7,8 +7,8 @@ import { generateToken } from "../utils/token.js";
 export const createAdmin = async (req, res) => {
   try {
     // get data from boady
-    const { name, address, mobile, email, password, isActive } = req.body;
-    
+    const { name, mobile, email, password } = req.body;
+
     // validate admin input
     if (!name || !email || !password) {
       return res
@@ -33,11 +33,9 @@ export const createAdmin = async (req, res) => {
     // create new admin
     const adminData = new Admin({
       name,
-      address,
       mobile,
       email,
       password: hashedPassword,
-      isActive,
     });
 
     // save admin to database
@@ -57,16 +55,9 @@ export const createAdmin = async (req, res) => {
 export const updateAdmin = async (req, res) => {
   try {
     // get admin id from params and data from body
-    const adminId = req.params.id;
+    const id = req.params.id;
 
-    const { name, address, mobile, email, password, isActive } = req.body;
-
-    //  validate fieleds
-    if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Name, email and password are required" });
-    }
+    const { name, mobile, email } = req.body;
 
     // find admin by id
     const admin = await Admin.findById(id);
@@ -76,28 +67,17 @@ export const updateAdmin = async (req, res) => {
     }
 
     // update admin data
-
     admin.name = name;
-    admin.address = address;
     admin.mobile = mobile;
     admin.email = email;
-
-    // hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    admin.password = hashedPassword;
-    admin.isActive = isActive;
-    
 
     // save updated admin to database
     const updatedAdmin = await admin.save();
 
-    const { password: _, ...adminWithoutPassword } = updatedAdmin.toObject();
-    // respond with success message and updated admin data
+    // response to client
     res.status(200).json({
       message: "Admin updated successfully",
-      user: adminWithoutPassword,
+      data: updatedAdmin,
     });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
@@ -161,15 +141,8 @@ export const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: "Invalid Password" });
     }
 
-    // admin status check
-    if (!admin.isActive) {
-      return res.status(403).json({
-        message: "Admin account is inactive. Please contact administrator.",
-      });
-    }
-
     // generate token
-    const token = generateToken(user, user.roll, res);
+    const token = generateToken(admin, admin.role, res);
 
     // respond with success message and token
     res.cookie("token", token);
@@ -179,7 +152,7 @@ export const loginAdmin = async (req, res) => {
     // response with success message and token
     res
       .status(200)
-      .json({ message: "Login successful", token, user: adminWithoutPassword });
+      .json({ message: "Login successful", data: adminWithoutPassword });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }

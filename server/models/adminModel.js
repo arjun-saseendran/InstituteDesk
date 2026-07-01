@@ -8,9 +8,7 @@ const adminSchema = new Schema(
       minlength: 3,
       maxlength: 50,
     },
-    address: {
-      type: String,
-    },
+
     mobile: {
       type: String,
       unique: true,
@@ -27,13 +25,10 @@ const adminSchema = new Schema(
       required: true,
       minlength: 6,
     },
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
+
     role: {
       type: String,
-      default: "admin"
+      default: "admin",
     },
   },
   {

@@ -1,7 +1,7 @@
 import { Student } from "../models/studentModel.js";
 
 // Create a new student
-export const createUser = async (req, res) => {
+export const createStudent = async (req, res) => {
   try {
     // get data from boady
     const {
