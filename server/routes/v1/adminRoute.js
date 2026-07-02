@@ -29,6 +29,12 @@ adminRouter.delete("/delete",adminAuth, deleteAdmin)
 // verify admin route
 adminRouter.get("/verify", verifyAdmin)
 
+// forgot password
+adminRouter.post("/forgot-password")
+
+// reset password
+adminRouter.post("/reset-password")
+
 
 
 

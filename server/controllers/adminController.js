@@ -1,9 +1,18 @@
 import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/token.js";
+import nodemailer from "nodemailer"
+
+// Config nodemailer
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_SERVICE,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 // Create a new Admin
-
 export const createAdmin = async (req, res) => {
   try {
     // get data from boady
@@ -205,6 +214,50 @@ export const deleteAdmin = async (req, res) => {
   }
 };
 
+/// Forgot password
+export const adminForgotPassword = async (req, res) => {
+  // Get admin email from body
+  const { email } = req.body;
+  try {
+    // Find admin found
+    const admin = await Admin.findOne({ email, role: "admin" });
+
+    // Handle admin not found
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    // Create reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    // Assign to database variable
+    admin.resetToken = resetToken;
+
+    // Set token expires
+    admin.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    // Save to database
+    await admin.save();
+
+    // Set rest link
+    const resetLink = `${process.env.CORS}/admin/reset-password/${resetToken}`;
+
+    // Setup mail
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Password reset request",
+      text: `Click the link to reset your password: ${resetLink}`,
+    });
+
+    // Send response to frontend
+    res.status(200).json({ message: "Reset email send!" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 // Reset password
 export const adminResetPassword = async (req, res) => {
   // Get data from request body
@@ -215,7 +268,7 @@ export const adminResetPassword = async (req, res) => {
 
   try {
     // Find the admin
-    const admin = await admin.findOne({
+    const admin = await Admin.findOne({
       resetToken: token,
       role: "admin",
       resetTokenExpires: { $gt: Date.now() },
@@ -229,9 +282,8 @@ export const adminResetPassword = async (req, res) => {
     }
 
     // Hashing password
-    const salt = await bcrypt.genSalt(10);
-    admin.password = await bcrypt.hash(password, salt);
-    
+    admin.password = await passwordHandler(password, undefined, res);
+
     // Clear tokens
     admin.resetToken = null;
     admin.resetTokenExpires = null;
@@ -243,6 +295,6 @@ export const adminResetPassword = async (req, res) => {
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
     // Handle catch error
-    res.status(500).json({message: "Internal server error"})
+    catchErrorHandler(res, error);
   }
 };

@@ -30,6 +30,14 @@ const adminSchema = new Schema(
       type: String,
       default: "admin",
     },
+    resetToken: {
+      type: String,
+      default: null,
+    },
+    resetTokenExpires: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
