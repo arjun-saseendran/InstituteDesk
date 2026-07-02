@@ -7,7 +7,11 @@ const orderSchema = new Schema(
       ref: "Student",
       required: true,
     },
-    
+    sessionId: {
+      type: String,
+      required: true,
+    },
+
     classId: {
       type: Schema.Types.ObjectId,
       ref: "Class",
