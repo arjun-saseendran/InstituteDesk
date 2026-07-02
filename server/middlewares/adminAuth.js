@@ -1,28 +1,35 @@
 import jwt from "jsonwebtoken";
 
-export const adminAuth = (req, res, next) => {
+// Handle admin authentication
+export const adminAuth = async (req, res, next) => {
   try {
-    // access token from cookies
+    // Get token
+
     const { token } = req.cookies;
 
-    // validate admin
+    // Handle token not found
     if (!token) {
-      return res.status(401).json({ message: "Please login" });
+      return res.status(401).json({ message: "Token not provided" });
     }
-   
-    // decode token
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
 
-    // validate token
-    if (!decode) {
-      return res.status(401).json({ message: "Admin not regsterd" });
+    // Decoding token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Handle no decoded
+    if (!decoded) {
+      return res.status(401).json({ message: "Admin not authorized" });
     }
-    if (decode) req.admin = decode;
 
+    // Checking role
+    if (decoded.role !== "admin") {
+      return res.status(404).json({ message: "User not authorized" });
+    }
+
+    // Set admin
+    req.admin = decoded;
     next();
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "something went wrong please try again" });
+    // Handle catch error
+    res.status(500).json({ message: "Internal server error!" });
   }
 };

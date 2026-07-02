@@ -1,7 +1,7 @@
 import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/token.js";
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
 // Config nodemailer
 const transporter = nodemailer.createTransport({
@@ -178,25 +178,34 @@ export const logoutAdmin = async (req, res) => {
   }
 };
 
-// user verify middleware
-
+// check admin
 export const verifyAdmin = async (req, res) => {
   try {
-    // get token from cookie
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+    // get id
+    const id = req.admin.id;
+
+    if (!id) {
+      return res.status(400).json({ message: "Invalid token payload" });
     }
 
-    // send response
-    res.status(200).json({ message: "Admin is authenticated" });
+    // Get admin details
+    const admin = await Admin.findById(id).select("-password");
+
+    if (!admin) {
+      return res
+        .status(404)
+        .json({ message: "Admin account no longer exists" });
+    }
+
+    // Send response to frontend
+    res.status(200).json({ message: "Authorized admin", data: admin });
   } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" });
+    // Handle catch error
+    res.status(500).json({ message: "Internal server error!" });
   }
 };
 
 // delete admin
-
 export const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.body;
@@ -254,7 +263,7 @@ export const adminForgotPassword = async (req, res) => {
     res.status(200).json({ message: "Reset email send!" });
   } catch (error) {
     // Handle catch error
-    res.status(500).json({message: "Internal server error!"})
+    res.status(500).json({ message: "Internal server error!" });
   }
 };
 
@@ -295,6 +304,6 @@ export const adminResetPassword = async (req, res) => {
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
     // Handle catch error
-    res.status(500).json({message: "Internal server error"})
+    res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -24,16 +24,16 @@ adminRouter.post('/login', loginAdmin)
 adminRouter.post('/logout', logoutAdmin)
 
 // delete admin route
-adminRouter.delete("/delete",adminAuth, deleteAdmin)
+adminRouter.delete("/delete", adminAuth, deleteAdmin)
 
 // verify admin route
-adminRouter.get("/verify", verifyAdmin)
+adminRouter.get("/verify", adminAuth, verifyAdmin)
 
 // forgot password
 adminRouter.post("/forgot-password", adminForgotPassword)
 
 // reset password
-adminRouter.post("/reset-password", adminResetPassword)
+adminRouter.post("/reset-password",adminResetPassword)
 
 
 

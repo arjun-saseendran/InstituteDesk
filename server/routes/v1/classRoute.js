@@ -7,16 +7,16 @@ import { createClass, deleteClass, getClass, getClasses, UpdateClass } from "../
 export const classRouter = Router();
 
 // create class
-classRouter.post("/class", createClass)
+classRouter.post("/create", createClass)
 
 // get all classes
 classRouter.get("/classes", getClasses)
 
 // get single class
-classRouter.get("/class/:id", getClass)
+classRouter.get("/:id", getClass)
 
 // update class
-classRouter.put("/class/:id", UpdateClass)
+classRouter.put("/update/:id", UpdateClass)
 
 // delete class
-classRouter.delete("/class/:id", deleteClass)
+classRouter.delete("/delete/:id", deleteClass)

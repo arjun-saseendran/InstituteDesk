@@ -4,10 +4,10 @@ import { Class } from "../models/classModel.js";
 export const createClass = async (req, res) => {
   try {
     // data from request body
-    const { title, category, price, sessionId } = req.body;
+    const { title, category, price } = req.body;
 
     // validate data
-    if (!title || !category || !price || !sessionId) {
+    if (!title || !category || !price) {
       return res.status(400).json({ err: "all fields required" });
     }
 
@@ -16,7 +16,6 @@ export const createClass = async (req, res) => {
       title,
       category,
       price,
-      sessionId,
     });
 
     // save class to database
@@ -86,10 +85,10 @@ export const deleteClass = async (req, res) => {
 export const UpdateClass = async (req, res) => {
   try {
     // data from req.body
-    const { title, category, price, sessionId } = req.body;
+    const { title, category, price } = req.body;
 
     // validate data
-    if (!title || !category || !price || !sessionId) {
+    if (!title || !category || !price) {
       // error response to client
       return res.status(400).json({ err: "some field missing" });
     }
@@ -104,7 +103,6 @@ export const UpdateClass = async (req, res) => {
         title,
         category,
         price,
-        sessionId,
       },
       { new: true },
     );
