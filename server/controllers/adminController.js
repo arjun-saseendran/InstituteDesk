@@ -254,7 +254,7 @@ export const adminForgotPassword = async (req, res) => {
     res.status(200).json({ message: "Reset email send!" });
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error);
+    res.status(500).json({message: "Internal server error!"})
   }
 };
 
@@ -295,6 +295,6 @@ export const adminResetPassword = async (req, res) => {
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error);
+    res.status(500).json({message: "Internal server error"})
   }
 };
