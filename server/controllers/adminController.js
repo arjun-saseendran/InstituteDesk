@@ -204,3 +204,45 @@ export const deleteAdmin = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// Reset password
+export const adminResetPassword = async (req, res) => {
+  // Get data from request body
+  const { password } = req.body;
+
+  // Get token from url
+  const { token } = req.params;
+
+  try {
+    // Find the admin
+    const admin = await admin.findOne({
+      resetToken: token,
+      role: "admin",
+      resetTokenExpires: { $gt: Date.now() },
+    });
+
+    // Handle admin not found
+    if (!token) {
+      return res
+        .status(400)
+        .json({ message: "Invalid token or token expired!" });
+    }
+
+    // Hashing password
+    const salt = await bcrypt.genSalt(10);
+    admin.password = await bcrypt.hash(password, salt);
+    
+    // Clear tokens
+    admin.resetToken = null;
+    admin.resetTokenExpires = null;
+
+    // Save admin data
+    await admin.save();
+
+    // Send response to frontend
+    res.status(200).json({ message: "Password reset successful!" });
+  } catch (error) {
+    // Handle catch error
+    res.status(500).json({message: "Internal server error"})
+  }
+};
