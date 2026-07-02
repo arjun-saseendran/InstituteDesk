@@ -5,10 +5,10 @@ import { Enrollment } from "../models/enrollmentModel.js";
 export const createEnrollment = async (req, res) => {
   try {
     // data from request body
-    const { studentId, classId, sessionId} = req.body;
+    const { studentId, classId } = req.body;
 
     // validate data
-    if (!studentId || !classId || !sessionId) {
+    if (!studentId || !classId) {
       return res.status(400).json({ err: "all fields required" });
     }
 
@@ -16,8 +16,7 @@ export const createEnrollment = async (req, res) => {
     const newEnrollment = new Enrollment({
       studentId,
       classId,
-      sessionId,
-    });
+      });
 
     // save enrollment to database
     await newEnrollment.save();
