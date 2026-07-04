@@ -11,7 +11,7 @@ export const createStudent = async (req, res) => {
       email,
       educationQualification,
       age,
-      DateOfBirth,
+      dateOfBirth,
       nameOfFather,
       nameOfGuardian,
       relationWithGuardian,
@@ -19,33 +19,21 @@ export const createStudent = async (req, res) => {
       toWhichClass,
       previousExperience,
       remark,
-      termsandconditions,
+      termsAndConditions,
       dateofAdmission,
-      admissionNo,
     } = req.body;
 
     // validate student input
-    if (
-      !name ||
-      !address ||
-      !mobile ||
-      !email ||
-      !educationQualification ||
-      !age ||
-      !DateOfBirth ||
-      !nameOfFather ||
-      !nameOfGuardian ||
-      !relationWithGuardian ||
-      !occupationOfGuardian ||
-      !toWhichClass ||
-      !previousExperience ||
-      !remark ||
-      !termsandconditions ||
-      !dateofAdmission ||
-      !admissionNo
-    ) {
-      return res.status(400).json({ message: "All fields required" });
-    }
+    const requiredFields = [
+          name, address, mobile, email, educationQualification, age,
+          dateOfBirth, nameOfFather, nameOfGuardian, relationWithGuardian,
+          occupationOfGuardian, toWhichClass, previousExperience, remark,
+          termsAndConditions, dateofAdmission
+        ];
+    
+        if (requiredFields.some(field => field === undefined || field === null || field === "")) {
+          return res.status(400).json({ message: "All fields required" });
+        }
 
     // check if student already exist
     const existingStudent = await Student.findOne({ email });
@@ -57,14 +45,14 @@ export const createStudent = async (req, res) => {
     }
 
     // create new admin
-    const studentData = new Admin({
+    const studentData = new Student({
       name,
       address,
       mobile,
       email,
       educationQualification,
       age,
-      DateOfBirth,
+      dateOfBirth,
       nameOfFather,
       nameOfGuardian,
       relationWithGuardian,
@@ -72,9 +60,8 @@ export const createStudent = async (req, res) => {
       toWhichClass,
       previousExperience,
       remark,
-      termsandconditions,
+      termsAndConditions: termsAndConditions,
       dateofAdmission,
-      admissionNo,
     });
 
     // save student to database
@@ -86,14 +73,14 @@ export const createStudent = async (req, res) => {
       student: saveStudent,
     });
   } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
 
 export const updateStudent = async (req, res) => {
   try {
     // get student id from params and data from body
-    const studentId = req.params.id;
+    const id = req.params.id;
 
     const {
       name,
@@ -102,7 +89,7 @@ export const updateStudent = async (req, res) => {
       email,
       educationQualification,
       age,
-      DateOfBirth,
+      dateOfBirth,
       nameOfFather,
       nameOfGuardian,
       relationWithGuardian,
@@ -110,9 +97,8 @@ export const updateStudent = async (req, res) => {
       toWhichClass,
       previousExperience,
       remark,
-      termsandconditions,
+      termsAndConditions,
       dateofAdmission,
-      admissionNo,
     } = req.body;
 
     // find student by id
@@ -123,12 +109,13 @@ export const updateStudent = async (req, res) => {
     }
 
     // update student data
+    student.name = name;
     student.address = address;
     student.mobile = mobile;
     student.email = email;
     student.educationQualification = educationQualification;
     student.age = age;
-    student.DateOfBirth = DateOfBirth;
+    student.dateOfBirth = dateOfBirth;
     student.nameOfFather = nameOfFather;
     student.nameOfGuardian = nameOfGuardian;
     student.relationWithGuardian = relationWithGuardian;
@@ -136,20 +123,19 @@ export const updateStudent = async (req, res) => {
     student.toWhichClass = toWhichClass;
     student.previousExperience = previousExperience;
     student.remark = remark;
-    student.termsandconditions = termsandconditions;
+    student.termsAndConditions = termsAndConditions;
     student.dateofAdmission = dateofAdmission;
-    student.admissionNo = admissionNo;
 
     // save updated student to database
     const updatedStudent = await student.save();
 
-   // respond with success message and updated student data
+    // respond with success message and updated student data
     res.status(200).json({
       message: "Student updated successfully",
       student: updatedStudent,
     });
   } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
 
@@ -159,7 +145,9 @@ export const getStudents = async (req, res) => {
     const students = await Student.find();
 
     // respond with success message and students data
-    res.status(200).json({ message: "Students retrieved successfully", students });
+    res
+      .status(200)
+      .json({ message: "Students retrieved successfully", students });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -177,7 +165,9 @@ export const getStudent = async (req, res) => {
     }
 
     // response with success message and admin data
-    res.status(200).json({ message: "Student retrieved succesdfully", student });
+    res
+      .status(200)
+      .json({ message: "Student retrieved succesdfully", student });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }

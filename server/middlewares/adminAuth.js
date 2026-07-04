@@ -27,9 +27,12 @@ export const adminAuth = async (req, res, next) => {
 
     // Set admin
     req.admin = decoded;
-    next();
+
+    return next();
   } catch (error) {
     // Handle catch error
-    res.status(500).json({ message: "Internal server error!" });
+    res
+      .status(500)
+      .json({ message: error.message || "Internal server error!" });
   }
 };

@@ -9,7 +9,7 @@ export const generateToken = (admin , role, res) =>{
         
     } catch (error) {
 
-        res.status(error.status || 500).json({error:error.message || "internal server Error"}); 
+        res.status(500).json({message: error.message || "Internal server error!"}); 
         
     }
 }

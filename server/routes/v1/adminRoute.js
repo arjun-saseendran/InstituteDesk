@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { createAdmin, deleteAdmin, getAdmins, getAdmin, loginAdmin, logoutAdmin, updateAdmin, verifyAdmin, adminForgotPassword, adminResetPassword } from "../../controllers/adminController.js";
+import { createAdmin, deleteAdmin, getAdmins, getAdmin, loginAdmin, logoutAdmin, updateAdmin, adminForgotPassword, adminResetPassword, verifyAdmin } from "../../controllers/adminController.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
+
 
 
 export const adminRouter = Router();
@@ -27,7 +28,7 @@ adminRouter.post('/logout', logoutAdmin)
 adminRouter.delete("/delete", adminAuth, deleteAdmin)
 
 // verify admin route
-adminRouter.get("/verify", adminAuth, verifyAdmin)
+adminRouter.get("/verify", verifyAdmin)
 
 // forgot password
 adminRouter.post("/forgot-password", adminForgotPassword)

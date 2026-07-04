@@ -180,15 +180,16 @@ export const logoutAdmin = async (req, res) => {
 
 // check admin
 export const verifyAdmin = async (req, res) => {
+  console.log("start");
   try {
     // get id
-    const id = req.admin.id;
+    const id = req.admin?.id;
 
     if (!id) {
       return res.status(400).json({ message: "Invalid token payload" });
     }
 
-    // Get admin details
+    // get admin details
     const admin = await Admin.findById(id).select("-password");
 
     if (!admin) {
@@ -196,12 +197,15 @@ export const verifyAdmin = async (req, res) => {
         .status(404)
         .json({ message: "Admin account no longer exists" });
     }
-
+    
     // Send response to frontend
-    res.status(200).json({ message: "Authorized admin", data: admin });
+    res.status(200).json({ message: "Authorized admin" });
   } catch (error) {
     // Handle catch error
-    res.status(500).json({ message: "Internal server error!" });
+
+    res
+      .status(500)
+      .json({ message: error.message || "Internal server error!" });
   }
 };
 
