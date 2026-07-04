@@ -197,7 +197,7 @@ export const verifyAdmin = async (req, res) => {
         .status(404)
         .json({ message: "Admin account no longer exists" });
     }
-    
+
     // Send response to frontend
     res.status(200).json({ message: "Authorized admin" });
   } catch (error) {

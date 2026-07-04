@@ -5,4 +5,4 @@ import { createEnrollment } from "../../controllers/enrollmentController.js";
 export const enrollmentRouter = Router();
 
 // create new enrollment
-enrollmentRouter.post("/enrollment", createEnrollment);
+enrollmentRouter.post("/create", createEnrollment);

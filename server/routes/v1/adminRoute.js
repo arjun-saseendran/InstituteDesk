@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAdmin, deleteAdmin, getAdmins, getAdmin, loginAdmin, logoutAdmin, updateAdmin, adminForgotPassword, adminResetPassword, verifyAdmin } from "../../controllers/adminController.js";
+import { createAdmin, deleteAdmin, getAdmins, getAdmin, loginAdmin, logoutAdmin, updateAdmin, adminForgotPassword, adminResetPassword, verifyAdmin} from "../../controllers/adminController.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
 
 
@@ -28,7 +28,7 @@ adminRouter.post('/logout', logoutAdmin)
 adminRouter.delete("/delete", adminAuth, deleteAdmin)
 
 // verify admin route
-adminRouter.get("/verify", verifyAdmin)
+adminRouter.get("/verify", adminAuth, verifyAdmin)
 
 // forgot password
 adminRouter.post("/forgot-password", adminForgotPassword)
