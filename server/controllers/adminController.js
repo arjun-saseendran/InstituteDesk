@@ -201,8 +201,8 @@ export const verifyAdmin = async (req, res) => {
     // Send response to frontend
     res.status(200).json({ message: "Authorized admin" });
   } catch (error) {
-    // Handle catch error
-
+   
+  // error response
     res
       .status(500)
       .json({ message: error.message || "Internal server error!" });

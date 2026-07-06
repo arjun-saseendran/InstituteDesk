@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // create checkout session
 export const createCheckoutSession = async (req, res, next) => {
   try {
-    const { classId } = req.body;
+    const { classId, student } = req.body;
 
     const classDetails = await Class.findById(classId);
     if (!classDetails) {
@@ -33,7 +33,7 @@ export const createCheckoutSession = async (req, res, next) => {
     });
 
     const order = new Order({
-      studentId: req.user.id,
+      studentId: student._id,
       sessionId: session.id,
       classId: classDetails._id,
       price: classDetails.price,
@@ -44,7 +44,7 @@ export const createCheckoutSession = async (req, res, next) => {
 
     // send email to student
     await sendPaymentEmail(
-      req.user.email,
+      student.email,
       classDetails.title,
       classDetails.price,
       session.url,
